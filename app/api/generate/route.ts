@@ -90,7 +90,9 @@ export async function POST(req: NextRequest) {
     const text = data.choices?.[0]?.message?.content || '';
     return NextResponse.json({ text });
 
-  } catch {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('Generate route error:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
